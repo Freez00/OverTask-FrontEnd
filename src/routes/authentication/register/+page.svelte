@@ -19,7 +19,7 @@
         Email: email,
         Password: password
       }
-      const response = await fetch('https://localhost:7221/authenticate/register', {
+      const response = await fetch('https://overtaskapi.me/authenticate/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

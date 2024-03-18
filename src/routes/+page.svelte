@@ -11,7 +11,7 @@
     
     async function ButtonClick()
     {
-        const response = await fetch('https://localhost:7221/account/getUsername', {
+        const response = await fetch('https://overtaskapi.me/account/getUsername', {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${await getToken()}`,
@@ -38,7 +38,7 @@
     async function LogOut()
     {
         console.log('Logging out');
-        const response = await fetch('https://localhost:7221/authenticate/logout', {
+        const response = await fetch('https://overtaskapi.me/authenticate/logout', {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${await getToken()}`,
