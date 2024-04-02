@@ -4,9 +4,17 @@ import { backendURL } from "./variables";
 export interface Group{
     Id:number,
     Name:string,
+    JoinCode:string,
+    Users?:GroupUser[],
     OwnerID:number,
+    PictureURL:string
 }
 
+export interface GroupUser{
+    Id:number,
+    Name:string,
+    PictureURL:string
+}
 
 export async function createGroup(name:string, joinCode:string){
     const resource = {
@@ -22,13 +30,25 @@ export async function createGroup(name:string, joinCode:string){
         },
         body:JSON.stringify(resource)
     });
-
     if(response.ok){
-        alert("Group Created Successfuly")
+
+        let data = await response.json();
+        console.log(data)
+        const group:Group = {
+            Id: data.group.id,
+            Name: data.group.name,
+            JoinCode: data.group.joinCode,
+            OwnerID: data.group.ownerID,
+            PictureURL: data.group.pictureURL,
+            Users: data.users.map((user:any) => ({
+                Id: user.id,
+                Name: user.userName,
+                PictureURL: user.profilePictureURL
+            }))
+        };
+        return group;
     }
-    else{
-        alert(response.statusText)
-    }
+    return undefined;
 }
 
 export async function joinGroup(joinCode:string){
@@ -40,13 +60,117 @@ export async function joinGroup(joinCode:string){
         },
         body:JSON.stringify(joinCode)
     });
-
     if(response.ok){
-        alert("Group joined Successfuly")
+        let data = await response.json();
+        const group:Group = {
+            Id: data.group.id,
+            Name: data.group.name,
+            JoinCode: data.group.joinCode,
+            OwnerID: data.group.ownerID,
+            PictureURL: data.group.pictureURL,
+            Users: data.users.map((user:any) => ({
+                Id: user.id,
+                Name: user.userName,
+                PictureURL: user.profilePictureURL
+            }))
+        };
+        return group;
     }
-    else{
-        alert("Problem")
+    return undefined;
+}
+
+export async function promoteUser(groupID:number, userID:number){
+    const resource:Number[] = [groupID, userID];
+    const response = await fetch(`${backendURL}/group/promote`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${await getToken()}`,
+          'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(resource)
+    });
+    if(response.ok){
+        let data = await response.json();
+        console.log("data is");
+        console.log(data);
+        const group:Group = {
+            Id: data.group.id,
+            Name: data.group.name,
+            JoinCode: data.group.joinCode,
+            OwnerID: data.group.ownerID,
+            PictureURL: data.group.pictureURL,
+            Users: data.users.map((user:any) => ({
+                Id: user.id,
+                Name: user.userName,
+                PictureURL: user.profilePictureURL
+            }))
+        };
+        return group;
     }
+    return undefined;
+}
+
+export async function kickUser(groupID:number, userID:number){
+    const resource:Number[] = [groupID, userID];
+    const response = await fetch(`${backendURL}/group/kick`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${await getToken()}`,
+          'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(resource)
+    });
+    if(response.ok){
+        let data = await response.json();
+        const group:Group = {
+            Id: data.group.id,
+            Name: data.group.name,
+            JoinCode: data.group.joinCode,
+            OwnerID: data.group.ownerID,
+            PictureURL: data.group.pictureURL,
+            Users: data.users.map((user:any) => ({
+                Id: user.id,
+                Name: user.userName,
+                PictureURL: user.profilePictureURL
+            }))
+        };
+        return group;
+    }
+    return undefined;
+
+}
+
+export async function editGroup(groupInfo:Group){
+    const resource = {
+        Id:groupInfo.Id,
+        Name:groupInfo.Name,
+        PictureURL:groupInfo.PictureURL
+    }
+    const response = await fetch(`${backendURL}/group/edit`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${await getToken()}`,
+          'Content-Type': 'application/json'
+        },
+        body:JSON.stringify(resource)
+    });
+    if(response.ok){
+        let data = await response.json();
+        const group:Group = {
+            Id: data.group.id,
+            Name: data.group.name,
+            JoinCode: data.group.joinCode,
+            OwnerID: data.group.ownerID,
+            PictureURL: data.group.pictureURL,
+            Users: data.users.map((user:any) => ({
+                Id: user.id,
+                Name: user.userName,
+                PictureURL: user.profilePictureURL
+            }))
+        };
+        return group;
+    }
+    return undefined;
 }
 
 export async function leaveGroup(groupID:number) {
@@ -58,13 +182,6 @@ export async function leaveGroup(groupID:number) {
         },
         body:JSON.stringify(groupID)
     });
-
-    if(response.ok){
-        alert("Group left Successfuly")
-    }
-    else{
-        alert("Problem")
-    }
 }
 
 export async function deleteGroup(groupID:number) {
@@ -76,13 +193,6 @@ export async function deleteGroup(groupID:number) {
         },
         body:JSON.stringify(groupID)
     });
-
-    if(response.ok){
-        alert("Group deleted Successfuly")
-    }
-    else{
-        alert("Problem")
-    }
 }
 
 export async function getGroups(){
@@ -96,11 +206,19 @@ export async function getGroups(){
     var data = await response.json();
     console.log(data);
     if(data){
-        const groups: Group[] = await data.groups.map((group: any) => ({
-            Id: group.id,
-            Name: group.name,
-            OwnerID: group.ownerID
-        })) ;
+        console.log(data);
+        const groups:Group[] = await data.map((record:any) => ({
+            Id: record.group.id,
+            Name: record.group.name,
+            JoinCode: record.group.joinCode,
+            OwnerID: record.group.ownerID,
+            PictureURL: record.group.pictureURL,
+            Users: record.users.map((user:any) => ({
+                Id: user.id,
+                Name: user.userName,
+                PictureURL: user.profilePictureURL
+            }))
+        }));
         return groups;
     }
     return [];

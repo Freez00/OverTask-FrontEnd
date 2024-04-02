@@ -3,20 +3,104 @@
     import { fade, scale } from 'svelte/transition';
     import {spring} from 'svelte/motion';
     import Navbar from '../navbar.svelte';
+    import {Register} from '$lib/scripts/authHandler';
+    import {Login} from '$lib/scripts/authHandler';
+    import {goto} from '$app/navigation';
+    import { writable } from 'svelte/store';
 
     let isRegister = false;
     let email = '';
     let username = '';
     let password = '';
     let confirmPassword = '';
+    
+    let errorMessages = writable<string[]>([]);
 
-    function handleSubmit() {
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    
+    $: model = {
+        UserName: username,
+        Email:email,
+        Password:password
+    }
+    $: isRegister, errorMessages.set([]);
+
+    let buttonColor = '#7f54b4'; // initial color
+    function handleMouseDown() {
+        buttonColor = '#5f2c9e'; // flash color
+    }
+    function handleMouseUp() {
+        buttonColor = '#7f54b4'; // original color
+    }
+    function handleMouseEnter(){
+        buttonColor = '#8864b5'; // flash color
+    }
+    
+    async function handleSubmit() {
+        errorMessages.update(messages => []);
         if (isRegister) {
-            // Handle register functionality
-            console.log('Register:', email, username, password, confirmPassword);
+            await handleRegister();
         } else {
-            // Handle login functionality
-            console.log('Login:', email, password);
+            await handleLogin();
+        }
+    }
+
+    async function handleRegister(){
+        if(!(email === '' || username === '' || password === '') && 
+        passwordRegex.test(password) && emailRegex.test(email) &&
+         password === confirmPassword)
+        {
+            Register(model).then(response =>{
+                if(response.ok){
+                    response.json().then(data =>{
+                        document.cookie = `token=${data.token};path=/;Secure;SameSite=Strict;`
+                        goto('/');
+                    });
+                }
+                else{
+                    errorMessages.update(messages => [...messages, "User with provided name/email already exists."]);
+                }
+            }).catch(_ => {
+                errorMessages.update(_ => ["Unable to connect to the server. Please check your internet connection and try again."])
+            });
+        }
+        else{
+            if(!emailRegex.test(email)){
+                errorMessages.update(messages => [...messages, "Email must be valid."])
+            }
+            if(!passwordRegex.test(password)){
+                errorMessages.update(messages => [...messages, "Password must be at least 8 characters long and contain 1 lowercase, 1 uppercase, 1 number, 1 special character."]);
+            }
+            if(!(password === confirmPassword)){
+                errorMessages.update(messages => [...messages, "Passwords must match."])
+            }
+            if(email === '' || username === '' || password === ''){
+                errorMessages.update(_ => ["All fields are required."])
+            }
+        }
+    }
+
+    async function handleLogin(){
+        if(!(email === '' || password === '')){
+            Login(model).then(response => {
+                if(response.ok){
+                    response.json().then(data => {
+                    document.cookie = `token=${data.token};path=/;Secure;SameSite=Strict;`;
+                    goto('/')
+                    });
+                }
+                else
+                {                
+                    errorMessages.update(_ => ["User with the provided information was not found."])
+                }
+            }).catch(_ => {
+                errorMessages.update(_ => ["Unable to connect to the server. Please check your internet connection and try again."])
+            });
+        }
+        else{
+            errorMessages.update(_ => ["All fields are required."])
         }
     }
 
@@ -65,24 +149,37 @@
                 {#if isRegister}
                 <div class="mb-3" transition:slide={{}}>
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="username" bind:value={username} required />
+                    <input type="text" class="form-control" id="username" bind:value={username}  />
                 </div>
                 {/if}
                 <div class="mb-3" transition:slide={{}}>
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" bind:value={email} required />
+                    <input type="text" class="form-control" id="email" bind:value={email}  />
                 </div>
                 <div class="mb-3" transition:slide={{}}>
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" bind:value={password} required />
+                    <input type="password" class="form-control" id="password" bind:value={password}  />
                 </div>
                 {#if isRegister}
                 <div class="mb-3" transition:slide={{}}>
                     <label for="confirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirmPassword" bind:value={confirmPassword} required />
+                    <input type="password" class="form-control" id="confirmPassword" bind:value={confirmPassword}  />
                 </div>
                 {/if}
-                <button type="submit" class="btn btn-primary" transition:scale>{isRegister ? 'Register' : 'Login'}</button>
+                <div class="mb-3">
+                    <ul style="color: #E04B5A;">
+                        {#each $errorMessages as message (message)}
+                            <li>{message}</li>
+                        {/each}
+                    </ul>
+                </div>
+                <div class="mt-1 d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary" style="background-color:{buttonColor}" 
+                        transition:scale on:mousedown={handleMouseDown} on:mouseup={handleMouseUp} on:mouseleave={handleMouseUp}
+                        on:mouseenter={handleMouseEnter}>
+                        {isRegister ? 'Register' : 'Login'}
+                    </button>
+                </div>
             </form>
         </div>
 </main>
@@ -90,14 +187,16 @@
 
 <style>
     body, html, main{
-        height:90%;
+        height:73%;
         margin: 0;
         display: flex;
         justify-content: center;
         align-items: center;
     }
+
     .all{
         height:100vh;
+        background-image: linear-gradient(transparent, #7f54b4);
     }
     
     .container {
@@ -148,8 +247,9 @@
     }
 
     .btn-primary {
-        background-color: #007bff;
+        background-color: #7f54b4;
         color: #fff;
         border: none;
     }
+    
 </style>

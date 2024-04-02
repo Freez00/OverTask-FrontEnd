@@ -1,4 +1,7 @@
 <script lang='ts'>
+    import Navbar from '../navbar.svelte';
+
+
     interface Todo {
         id: number;
         text: string;
@@ -22,7 +25,7 @@
         todos = todos.filter(todo => todo.id !== id);
     }
 </script>
-
+<Navbar/>
 <h1>Todo List</h1>
 
 <!-- Display todos -->

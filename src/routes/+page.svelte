@@ -48,9 +48,9 @@
         if(response.ok)
         {
             console.log('Logged out');
-            document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-            username = 'Unknown User';
         }
+        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+        username = 'Unknown User';
     }
     
     onMount(async () => {

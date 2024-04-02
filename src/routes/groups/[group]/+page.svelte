@@ -385,7 +385,7 @@ addEventWrapper.classList.toggle("active");
 });
 
 goBackBtn.addEventListener("click", () => {
-  window.location.replace("../");
+  window.location.replace("../groups");
 });
 
 addEventCloseBtn.addEventListener("click", () => {
@@ -568,7 +568,7 @@ async function saveEvents() {
 
   }
   else{
-    window.location.replace("../");
+    window.location.replace("../groups");
   }
 
 }
@@ -592,7 +592,7 @@ async function getEvents() {
     console.log("got API");
   }
   else{
-    window.location.replace("../");
+    window.location.replace("../groups");
   }
 }
 

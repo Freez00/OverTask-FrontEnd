@@ -18,7 +18,7 @@
     }
 </script>
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark navbar-custom">
     <a class="navbar-brand" href="/">OverTask</a>
     <button
         class="navbar-toggler"
@@ -55,5 +55,8 @@
 <style>
     .show {
         display: block !important;
+    }
+    .navbar-custom{
+        background-color: #8864b5 !important;
     }
 </style>
