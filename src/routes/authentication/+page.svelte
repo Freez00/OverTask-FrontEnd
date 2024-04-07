@@ -186,6 +186,7 @@
 </div>
 
 <style>
+
     body, html, main{
         height:73%;
         margin: 0;
@@ -194,17 +195,28 @@
         align-items: center;
     }
 
+
     .all{
         height:100vh;
         background-image: linear-gradient(transparent, #7f54b4);
+        /*background-image: url('login-bg.jpg');*/
+        
+
     }
     
     .container {
-        max-width: 400px; /* This might not be necessary if you're using a Bootstrap container */
+    max-width: 400px; /* This might not be necessary if you're using a Bootstrap container */
     margin: auto auto;
     padding: 20px;
     background-color: #373c4f;
     border-radius: 20px;
+    font-family: "Cabin", sans-serif;
+		font-optical-sizing: auto;
+		font-weight: 400;
+		font-style: normal;
+		font-variation-settings:
+			"wdth" 100;
+    
     /*height:524px;*/
 }
 

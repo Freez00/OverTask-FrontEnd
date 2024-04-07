@@ -59,6 +59,13 @@
 		border-radius: 0.2em;
 		border: none;
 		padding: 0;
+		font-family: "Cabin", sans-serif;
+		font-optical-sizing: auto;
+		font-weight: 400;
+		font-style: normal;
+		font-variation-settings:
+			"wdth" 100;
+
 	}
 	dialog::backdrop {
 		background: rgba(0, 0, 0, 0.3);
@@ -112,7 +119,7 @@
     }
 
 	.action-button:hover {
-		background-color: rgb(192, 91, 239);
+		background-color: rgb(181, 115, 212);
 	}
 
 	.button-holder {

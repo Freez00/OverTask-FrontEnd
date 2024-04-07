@@ -641,7 +641,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-bottom: 30px;
   background-color: #e2e1dc;
 }
 .container {
@@ -1194,6 +1193,12 @@ body {
 }
 .credits a:hover {
   text-decoration: underline;
+}
+
+*{
+  font-family: "Anton", sans-serif ;!important
+        font-weight: 400;!important
+        font-style: normal;!important
 }
 
     </style>

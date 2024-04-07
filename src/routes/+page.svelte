@@ -58,9 +58,21 @@
     });
 
 
-
-    
-    
+    async function getTasks(){
+        console.log("getting tasks")
+        const response = await fetch(`https://localhost:7221/todo/get`, {
+            method:"GET",
+            headers:{
+                'Authorization': `Bearer ${await getToken()}`,
+                'Content-Type': 'application/json'
+            }
+        });
+        if(response.ok){
+            const data = await response.json();
+            console.log("we dun it");
+            console.log(data);
+        }
+    }
 </script>
 <Navbar />
 <h1>Welcome to SvelteKit, {username}</h1>
@@ -74,3 +86,12 @@
     Log out
 </button>
 
+<button on:click={getTasks}>
+    Get tasks
+</button>
+
+<div class="rectangle"></div>
+
+<style>
+
+</style>

@@ -1175,7 +1175,11 @@ body {
   }
 }
 
-
+*{
+  font-family: "Anton", sans-serif ;!important
+        font-weight: 400;!important
+        font-style: normal;!important
+}
 
     </style>
   </body>

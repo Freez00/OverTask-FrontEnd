@@ -296,7 +296,7 @@
 
         .group:hover{
             border: 3px solid ;
-            background-color: #f9eddc;
+            background-color: rgb(207, 191, 218);
         }
 
 
@@ -337,7 +337,7 @@
             border: 1px solid #373c4f;
         }
         .manage-button:hover, .create-group-button:hover{
-            background-color: rgb(192, 91, 239);
+            background-color: rgb(181, 115, 212);
         }
 
         .calendar-button {
@@ -411,8 +411,8 @@
         }
         .go-back:hover {
             opacity: 1;
-            color:#ff0000;
-            border-color:#ff0000;
+            color:#E04B5A;
+            border-color:#E04B5A;
         }
         .view-members{
             position: absolute;
@@ -468,7 +468,7 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(to right, orange, orange);
+            background: linear-gradient(to right, #FFE761, #FFE761);
             transition: all 1s ease;
         }
 
@@ -510,7 +510,7 @@
         }
         
         .promote:hover{
-            color:rgb(255, 234, 112);
+            color:orange;
         }
         
         .kick:hover{
