@@ -60,7 +60,7 @@
 
     async function getTasks(){
         console.log("getting tasks")
-        const response = await fetch(`https://localhost:7221/todo/get`, {
+        const response = await fetch(`https://overtaskapi.me/todo/get`, {
             method:"GET",
             headers:{
                 'Authorization': `Bearer ${await getToken()}`,

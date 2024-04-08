@@ -5,6 +5,8 @@
     import {onMount} from 'svelte';
     import {getTasksAPI, createTaskAPI, deleteTaskAPI, updateTaskAPI} from '$lib/scripts/todoHandler';
     import {getCategoriesAPI, deleteCategoryAPI, updateCategoryAPI} from '$lib/scripts/todoHandler';
+    import {slide } from 'svelte/transition';
+
 
     export let record:any;
     export let editingCategory:any;
@@ -19,10 +21,11 @@
     let categoryID:number;
     let colorPicker:any;
     let isCreatingTask:boolean = false;
+    let dropdownActive:boolean = true;
 
     $:isEditingCategory= record.Category.Id === editingCategory; 
 
-    $: {
+    $: {    
         if (isEditingCategory) {
             tick().then(() => {
                 inputElement.focus();
@@ -44,6 +47,7 @@
     });
 
     async function startEditing() {
+        isCreatingTask=false;
         $editingCategory =record.Category.Id;
         originalTitle = record.Category.Title;
         title = record.Category.Title; 
@@ -64,6 +68,8 @@
     }
 
     function startCreating(){
+        isEditingCategory = false;
+        dropdownActive = true;
         isCreatingTask = true;
         
     }
@@ -104,7 +110,11 @@
                 <button on:click={() => {cancelEdit()}}>Cancel edit</button>
             </div>
         {:else}
-        <h1 style="align: left;">{record.Category.Title}</h1>
+        <div style="display:inline-flex; justify-content:center; align-items:center;vertical-align:middle;">
+            <button style="margin-left:0.5rem" class="dropdown-button" on:click={() => {dropdownActive = !dropdownActive; isCreatingTask=false;}}>
+                <i class="fa fa-caret-right" class:rotate={dropdownActive}></i></button>
+            <h1 style="align: left;">{record.Category.Title}</h1>
+        </div>
         {#if record.Category.Id != -1}
         <div class="category-actions">
             <button on:click={()=> {startCreating()}}>+</button>
@@ -119,17 +129,21 @@
 
         {/if}
     </div>
-    {#each record.Tasks as task}
-    <div class={`task ${task.Completed ? 'crossed-out' : ''}`}>
-        <div class="task-actions">
-            <input id="{task.Id}" type="checkbox" checked={task.Completed} on:change={async() => {await handleUpdateTaskAPI(task.Id, task.Title, !task.Completed)}}/>
-            <p>{task.Title}</p>
+    {#if dropdownActive}
+    <div class="dropdown-content" class:active={dropdownActive} transition:slide={{duration:500}}>
+        {#each record.Tasks as task}
+        <div class={`task ${task.Completed ? 'crossed-out' : ''}`}>
+            <div class="task-actions">
+                <input id="{task.Id}" type="checkbox" checked={task.Completed} on:change={async() => {await handleUpdateTaskAPI(task.Id, task.Title, !task.Completed)}}/>
+                <p>{task.Title}</p>
+            </div>
+            <div class="task-actions">
+                <button on:click={async () => {await handleDeleteTaskAPI(task.Id)}}>Delete</button>
+            </div>
         </div>
-        <div class="task-actions">
-            <button on:click={async () => {await handleDeleteTaskAPI(task.Id)}}>Delete</button>
-        </div>
+        {/each}
     </div>
-    {/each}
+    {/if}
     {#if isCreatingTask}
 
     <div class="task">
@@ -145,7 +159,7 @@
 
 <style>
     .header{
-        margin-top:5%;
+        margin-top:2rem;
         font-size:4rem;
         display: flex;
         justify-content:center;
@@ -165,7 +179,17 @@
         margin-bottom:2rem;
         border-radius: 15px;
         overflow: hidden;
+        
     }
+
+    @media only screen and (max-width: 600px){
+        .category-section{
+            width: 100%;
+        }
+        
+    }
+
+    
 
     .category{
         display: flex;
@@ -177,7 +201,7 @@
         
     }
     .category input, .category h1{
-        height:3rem;
+        /*height:3rem;*/
         padding:0;
         margin:0;
         margin-left:1rem; 
@@ -238,9 +262,6 @@
         text-overflow: ellipsis;
 
     }
-    .task input{
-        
-    }
     .task p{
         margin: 0;
         margin-left: 0.5rem;
@@ -276,6 +297,35 @@
         border: 1px solid #523875; /* Change the color as needed */
         
     }
+
+    .rotate{
+        transform: rotate(90deg);            
+    }
+    .fa-caret-right{
+            transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+        
+
+        .dropdown-button {
+            display: flex;
+            
+            text-decoration: none;
+            font-size: 1rem;
+            color: #fff;
+            border: none;
+            background: none;
+            width: calc(80% + 2*1rem);
+            text-align: left;
+            cursor: pointer;
+            outline: none;
+            margin-left: 1rem;
+            padding-right:0;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .dropdown-button:hover {
+            color: #e2c3ff;
+        }
 
     input[type="checkbox"] {
     /* Add if not using autoprefixer */

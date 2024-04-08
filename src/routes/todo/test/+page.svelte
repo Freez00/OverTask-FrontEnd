@@ -32,7 +32,6 @@
     })
 
     async function getInfo(){
-        info = [];
         let data = await getTasksAPI();
         info = data;
         console.log(info);
@@ -43,7 +42,9 @@
     async function handleCreateCategory(){
         isCreatingCategory = false;
         await createCategoryAPI(createCategoryTitle, colorPicker.value);
+        info = [];
         await getInfo();
+        createCategoryTitle= '';
     }
 
 </script> 
@@ -142,7 +143,7 @@
         
     }
     .category input, .category h1{
-        height:3rem;
+        /*height:3rem;*/
         padding:0;
         margin:0;
         margin-left:1rem; 
@@ -182,7 +183,7 @@
 
 
     .header{
-        margin-top:5%;
+        margin-top:2rem;
         font-size:4rem;
         display: flex;
         justify-content:center;
@@ -203,12 +204,18 @@
         border-radius: 15px;
         overflow: hidden;
     }
+    @media only screen and (max-width: 600px){
+        .category-section{
+            width: 100%;
+        }
+    }
+
 
     .category{
         display: flex;
         justify-content: space-between;
         align-items: center;
-        vertical-align: middle;
+        vertical-align: middle !important;
 
         background-color: #8B7AA0;
         

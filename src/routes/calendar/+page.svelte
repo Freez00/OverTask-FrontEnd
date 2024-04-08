@@ -1,5 +1,6 @@
 <script>
     import { browser } from "$app/environment";
+    import { applyAction } from "$app/forms";
     import { goto } from "$app/navigation";
     import { isAuthenticated } from "$lib/scripts/requestHandler";
     import Navbar from "../navbar.svelte";
@@ -548,7 +549,7 @@ async function saveEvents() {
   if(isAuth === true){
     const resource = JSON.stringify(eventsArr);
     console.log("resource is" + resource);
-    const response = await fetch('https://localhost:7221/event/save', {
+    const response = await fetch('https://overtaskapi.me/event/save', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${await getToken()}`,
@@ -570,7 +571,7 @@ async function saveEvents() {
 async function getEvents() {
   var isAuth = await isAuthenticated();
   if(isAuth === true){
-    const response = await fetch('https://localhost:7221/event/get', {
+    const response = await fetch('https://overtaskapi.me/event/get', {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${await getToken()}`,

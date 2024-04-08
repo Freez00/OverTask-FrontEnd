@@ -556,7 +556,7 @@ async function saveEvents() {
       eventsInformation:eventsArr
     });
     console.log("resource is" + resource);
-    const response = await fetch('https://localhost:7221/group/event/save', {
+    const response = await fetch('https://overtaskapi.me/group/event/save', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${await getToken()}`,
@@ -577,7 +577,7 @@ async function saveEvents() {
 async function getEvents() {
   var isAuth = await isAuthenticated();
   if(isAuth === true){
-    const response = await fetch('https://localhost:7221/group/event/get', {
+    const response = await fetch('https://overtaskapi.me/group/event/get', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${await getToken()}`,
