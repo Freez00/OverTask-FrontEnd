@@ -280,7 +280,7 @@
     }
 
     .categories-container{
-        word-wrap: normal;
+        /*word-wrap: normal;*/
     }
 
     .crossed-out{

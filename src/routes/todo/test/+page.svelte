@@ -96,7 +96,7 @@
 
     }
     .main *{
-        word-wrap: break-word;
+        /*word-wrap: break-word;*/
     }
 
     .header{
@@ -303,7 +303,7 @@
     }
 
     .categories-container{
-        word-wrap: normal;
+        /*word-wrap: normal;*/
     }
 
     .crossed-out{
