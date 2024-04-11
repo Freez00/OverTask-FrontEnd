@@ -1,17 +1,17 @@
-<script>
+<script lang="ts">
     import { json } from "@sveltejs/kit";
     import { browser } from "$app/environment";
 	import { onMount } from 'svelte';
     import {getToken} from '$lib/scripts/requestHandler'
     import Navbar from './navbar.svelte';
+    import {backendURL} from '$lib/scripts/variables'
+    import {localTaskInformation} from '$lib/scripts/localTasksPrst'
 
-    $:username = 'Loading..';
-  
-
+    $:username = '--(waiting for connection to server)--';
     
     async function ButtonClick()
     {
-        const response = await fetch('https://overtaskapi.me/account/getUsername', {
+        const response = await fetch(`${backendURL}/account/getUsername`, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${await getToken()}`,
@@ -38,7 +38,7 @@
     async function LogOut()
     {
         console.log('Logging out');
-        const response = await fetch('https://overtaskapi.me/authenticate/logout', {
+        const response = await fetch(`${backendURL}/authenticate/logout`, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${await getToken()}`,
@@ -58,40 +58,15 @@
     });
 
 
-    async function getTasks(){
-        console.log("getting tasks")
-        const response = await fetch(`https://overtaskapi.me/todo/get`, {
-            method:"GET",
-            headers:{
-                'Authorization': `Bearer ${await getToken()}`,
-                'Content-Type': 'application/json'
-            }
-        });
-        if(response.ok){
-            const data = await response.json();
-            console.log("we dun it");
-            console.log(data);
-        }
-    }
 </script>
 <Navbar />
-<h1>Welcome to SvelteKit, {username}</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-
-<button on:click={ButtonClick}>
-    Click me
-</button>
-
-<button on:click={LogOut}>
-    Log out
-</button>
-
-<button on:click={getTasks}>
-    Get tasks
-</button>
-
-<div class="rectangle"></div>
-
-<style>
-
+<div>
+    
+    <h1>Welcome to Overtask, {username}</h1>
+    <p>Todo & Calendar rabotqt na online i offline mode. Kogato ste vleznali v accounta si rabotqt sus bazata danni i zapazvat tam. Ako ne ste avtentikirani informaciqta se vzima i zapazva lokalno.</p>
+    <p>Za grupite e zaduljitelno da ste vlezli v profila si i da imate internet.</p>    
+    
+</div>
+    <style>
+        
 </style>

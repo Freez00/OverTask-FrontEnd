@@ -3,9 +3,17 @@
     import {tick} from 'svelte';
     import {goto} from '$app/navigation';
     import {onMount} from 'svelte';
-    import {getTasksAPI, createTaskAPI, deleteTaskAPI, updateTaskAPI} from '$lib/scripts/todoHandler';
-    import {getCategoriesAPI, deleteCategoryAPI, updateCategoryAPI} from '$lib/scripts/todoHandler';
+    
+    import {createTaskAPI, deleteTaskAPI, updateTaskAPI} from '$lib/scripts/todoHandler';
+    import {deleteCategoryAPI, updateCategoryAPI} from '$lib/scripts/todoHandler';
+
+    import {createTaskLocal, deleteTaskLocal, updateTaskLocal} from '$lib/scripts/todoHandler';
+    import {deleteCategoryLocal, updateCategoryLocal} from '$lib/scripts/todoHandler';
+
+
     import {slide } from 'svelte/transition';
+    import {isAuthenticated} from '$lib/scripts/requestHandler';
+
 
 
     export let record:any;
@@ -23,7 +31,7 @@
     let isCreatingTask:boolean = false;
     let dropdownActive:boolean = true;
 
-    $:isEditingCategory= record.Category.Id === editingCategory; 
+    $:isEditingCategory = record.Category.Id === editingCategory; 
 
     $: {    
         if (isEditingCategory) {
@@ -55,7 +63,12 @@
     }
 
     async function confirmEdit() {
-        await updateCategoryAPI(categoryID, title, colorPicker.value);
+        if(await isAuthenticated()){
+            await updateCategoryAPI(categoryID, title, colorPicker.value);
+        } else {
+            updateCategoryLocal(categoryID, title, colorPicker.value);
+        }
+
         $editingCategory = -2;
         isEditingCategory = false;
         await getInfo();
@@ -68,6 +81,7 @@
     }
 
     function startCreating(){
+        title = '';
         isEditingCategory = false;
         dropdownActive = true;
         isCreatingTask = true;
@@ -75,7 +89,11 @@
     }
 
     async function confirmCreate(){
-        await createTaskAPI(categoryID, title);
+        if(await isAuthenticated()){
+            await createTaskAPI(categoryID, title);
+        } else {
+            createTaskLocal(categoryID, title);
+        }
         await getInfo();
         title = ''; 
         isCreatingTask=false;
@@ -83,17 +101,29 @@
 
 
     async function handleDeleteCategoryAPI() {
-        await deleteCategoryAPI(categoryID);
+        if(await isAuthenticated()){
+            await deleteCategoryAPI(categoryID);
+        } else {
+            deleteCategoryLocal(categoryID);
+        }
         await getInfo();
     }
 
     async function handleDeleteTaskAPI(taskID: number) {
-        await deleteTaskAPI(taskID);
+        if(await isAuthenticated()){
+            await deleteTaskAPI(taskID);
+        } else {
+            deleteTaskLocal(taskID);
+        }
         await getInfo();
     }
 
     async function handleUpdateTaskAPI(taskID: number, title:string, completed: boolean) {
-        await updateTaskAPI(taskID, title, completed);
+        if(await isAuthenticated()){
+            await updateTaskAPI(taskID, title, completed);
+        } else {
+            updateTaskLocal(taskID, title, completed);
+        }
         await getInfo();
     }
 
@@ -314,7 +344,7 @@
             color: #fff;
             border: none;
             background: none;
-            width: calc(80% + 2*1rem);
+            width: 1rem;
             text-align: left;
             cursor: pointer;
             outline: none;

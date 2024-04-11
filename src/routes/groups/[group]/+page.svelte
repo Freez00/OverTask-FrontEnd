@@ -3,6 +3,7 @@
     import { goto } from "$app/navigation";
     import { getGroups } from "$lib/scripts/groupHandler";
     import { isAuthenticated } from "$lib/scripts/requestHandler";
+    import { backendURL } from "$lib/scripts/variables";
 
 </script>
 <!DOCTYPE svelteHTML>
@@ -99,7 +100,9 @@
       </button>
     </div>
     <script lang='ts'>
-      
+
+const backendURL = "https://overtaskapi.me";
+
 const calendar = document.querySelector(".calendar"),
 date = document.querySelector(".date"),
 daysContainer = document.querySelector(".days"),
@@ -556,7 +559,7 @@ async function saveEvents() {
       eventsInformation:eventsArr
     });
     console.log("resource is" + resource);
-    const response = await fetch('https://overtaskapi.me/group/event/save', {
+    const response = await fetch(`${backendURL}/group/event/save`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${await getToken()}`,
@@ -577,7 +580,7 @@ async function saveEvents() {
 async function getEvents() {
   var isAuth = await isAuthenticated();
   if(isAuth === true){
-    const response = await fetch('https://overtaskapi.me/group/event/get', {
+    const response = await fetch(`${backendURL}/group/event/get`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${await getToken()}`,
@@ -585,6 +588,8 @@ async function getEvents() {
           },
           body:JSON.stringify(groupID)
         });
+    console.log("response is")
+    console.log(response);
     const data = await response.json();
     console.log("get data is " + JSON.stringify(data.result));
     eventsArr.length = 0;

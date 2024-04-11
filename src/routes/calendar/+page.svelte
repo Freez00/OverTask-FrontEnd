@@ -3,6 +3,7 @@
     import { applyAction } from "$app/forms";
     import { goto } from "$app/navigation";
     import { isAuthenticated } from "$lib/scripts/requestHandler";
+    import { backendURL } from "$lib/scripts/variables";
     import Navbar from "../navbar.svelte";
 
 </script>
@@ -100,6 +101,7 @@
       </button>
     </div>
     <script lang='ts'>
+      const backendURL = "https://overtaskapi.me";
       
 const calendar = document.querySelector(".calendar"),
 date = document.querySelector(".date"),
@@ -549,7 +551,7 @@ async function saveEvents() {
   if(isAuth === true){
     const resource = JSON.stringify(eventsArr);
     console.log("resource is" + resource);
-    const response = await fetch('https://overtaskapi.me/event/save', {
+    const response = await fetch(`${backendURL}/event/save`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${await getToken()}`,
@@ -571,7 +573,7 @@ async function saveEvents() {
 async function getEvents() {
   var isAuth = await isAuthenticated();
   if(isAuth === true){
-    const response = await fetch('https://overtaskapi.me/event/get', {
+    const response = await fetch(`${backendURL}/event/get`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${await getToken()}`,

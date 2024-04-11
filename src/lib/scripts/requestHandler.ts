@@ -40,3 +40,22 @@ export async function isAuthenticated(){
         return false;
       }
 }
+
+export async function getUsername(){
+    const response = await fetch(`${backendURL}/account/getUsername`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${await getToken()}`,
+            'Content-Type': 'application/json'
+        }
+    });
+    
+    if(response.ok)
+    {
+        const data = await response.json();
+        let username = data.username;
+        return username;
+    }
+
+    return "Unknown";
+}

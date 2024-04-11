@@ -22,6 +22,7 @@
 	"dependencies": {
 		"bootstrap": "^5.3.3",
 		"bootstrap-icons": "^1.11.3",
+		"svelte-persisted-store": "^0.9.1",
 		"svelte-routing": "^2.12.0"
 	}
 }

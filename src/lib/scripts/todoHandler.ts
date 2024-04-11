@@ -1,5 +1,8 @@
 import { getToken } from "./requestHandler";
 import { backendURL } from "./variables";
+import { browser } from '$app/environment';
+import { get } from "svelte/store";
+import { localTaskInformation, todoLocalIndex, categoryLocalIndex } from "./localTasksPrst";
 
 
 export interface Category{
@@ -15,6 +18,100 @@ export interface Task{
 }
 
 
+export function getTasksLocal(){
+    let taskInfo = get(localTaskInformation)
+    return taskInfo.records;
+}
+
+export function createTaskLocal(categoryId:number, title:string){
+    let taskInfo = getTasksLocal();
+    let index = get(todoLocalIndex);
+    let task:Task = {
+        Id: index++,
+        Title: title,
+        Completed: false
+    };
+
+    for(let record of taskInfo){
+        if(record.Category.Id === categoryId){
+            record.Tasks.push(task);
+            localTaskInformation.set({records: taskInfo});
+            todoLocalIndex.set(index);
+            return task;
+        }
+    }
+    
+    return false;
+}
+
+export function deleteTaskLocal(taskId: number) {
+    let taskInfo = getTasksLocal();
+
+    for (let record of taskInfo) {
+        const taskIndex = record.Tasks.findIndex(task => task.Id === taskId);
+
+        if (taskIndex !== -1) {
+            record.Tasks.splice(taskIndex, 1);
+        }
+    }
+
+    localTaskInformation.set({ records: taskInfo });
+}
+
+export function updateTaskLocal(taskId:number, title:string, completed:boolean){
+    let taskInfo = getTasksLocal();
+
+    for (let record of taskInfo) {
+        const task = record.Tasks.find(task => task.Id === taskId);
+        if (task) {
+            task.Title = title;
+            task.Completed = completed;
+        }
+    }
+
+    localTaskInformation.set({records: taskInfo});
+}
+
+export function createCategoryLocal(title:string, color:string){
+    let taskInfo = getTasksLocal();
+    let index = get(categoryLocalIndex);
+    console.log("index is")
+    console.log(index)
+    let category = {
+        Id: index,
+        Title: title,
+        Color: color,
+    };
+    console.log("category is")
+    console.log(category)
+
+    taskInfo.push({ Category: category, Tasks: [] });
+
+    localTaskInformation.set({records: taskInfo});
+    categoryLocalIndex.set(index + 1);
+
+}
+
+export function updateCategoryLocal(categoryId:number, title:string, color:string){
+    let taskInfo = getTasksLocal();
+
+    for (let record of taskInfo) {
+        if (record.Category.Id === categoryId) {
+            record.Category.Title = title;
+            record.Category.Color = color;
+        }
+    }
+
+    localTaskInformation.set({records: taskInfo});
+}
+
+export function deleteCategoryLocal(categoryId: number) {
+    let taskInfo = getTasksLocal();
+    
+    taskInfo = taskInfo.filter(record => record.Category.Id !== categoryId);
+
+    localTaskInformation.set({records: taskInfo});
+}
 
 export async function getTasksAPI(){
     const response = await fetch(`${backendURL}/todo/get`, {
