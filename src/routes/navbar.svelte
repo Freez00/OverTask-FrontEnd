@@ -13,7 +13,7 @@
     let dropdownOpen = false;
     let isLoggedIn = writable<boolean>(false);
 
-    let username = 'Unknown';
+    let username = 'Няма връзка със сървъра';
 
     $: if ($isLoggedIn) {
         getUsername().then(result => {
@@ -77,24 +77,24 @@
     >
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="../todo">Todo</a>
+                <a class="nav-link" href="../todo">Задачи</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="../calendar/" on:click|preventDefault={() => navigateTo('../calendar/')}>Calendar</a>
+                <a class="nav-link" href="../calendar/" on:click|preventDefault={() => navigateTo('../calendar/')}>Календар</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="../groups">Groups</a>
+                <a class="nav-link" href="../groups">Групи</a>
             </li>
             {#if !$isLoggedIn}
                 <li class="nav-item d-lg-none">
-                    <a class="nav-link" href="../authentication">Login</a>
+                    <a class="nav-link" href="../authentication">Влизане</a>
                 </li>
             {:else}
                 <li class="nav-item d-lg-none">
-                    <a class="nav-link" href="">{username}</a>
+                    <a class="nav-link" href="#">{username}</a>
                 </li>
                 <li class="nav-item d-lg-none">
-                    <a class="nav-link" href="" on:click={handleLogOut}>Logout</a>
+                    <a class="nav-link" href="#" on:click={handleLogOut}>Излизане</a>
                 </li>
             {/if}
         </ul>
@@ -102,7 +102,7 @@
     <ul class="navbar-nav user-nav d-none d-lg-flex">
         {#if !$isLoggedIn}
             <li class="nav-item">
-                <a class="nav-link" href="../authentication">Login</a>
+                <a class="nav-link" href="../authentication">Влизане</a>
             </li>
         {:else}
             <li class="nav-item dropdown">
@@ -111,8 +111,8 @@
                 </a>
                 {#if dropdownOpen}
                     <div class="dropdown-menu show">
-                        <a class="dropdown-item" href="#">Profile</a>
-                        <a class="dropdown-item" href="#" on:click={handleLogOut}>Logout</a>
+                        <a class="dropdown-item" href="#">Профил</a>
+                        <a class="dropdown-item" href="#" on:click={handleLogOut}>Излизане</a>
                     </div>
                 {/if}
             </li>
@@ -143,5 +143,9 @@
     }
     .navbar-nav {
         padding-right: 20px;
+    }
+    .navbar-brand{
+        margin-left: 20px;
+		font-family: "Anton", sans-serif !important;
     }
 </style>

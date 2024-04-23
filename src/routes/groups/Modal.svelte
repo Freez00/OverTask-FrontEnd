@@ -44,9 +44,9 @@
 		<slot />
 		<hr />
 		<!-- svelte-ignore a11y-autofocus -->
-		<p style="color:red;position:absolute;bottom:50px;"><b>{errorMessage}</b></p>
+		<p style="color:red;position:absolute;bottom:50px; font-size:small;"><b>{errorMessage}</b></p>
 		<div class="button-holder">
-			<button on:click={() => dialog.close()}>Close</button>
+			<button on:click={() => dialog.close()}>Затвори</button>
 			<button class="action-button" on:click={async () => { await handleAction()}}>{buttonTitle}</button>
 		</div>
 	</div>

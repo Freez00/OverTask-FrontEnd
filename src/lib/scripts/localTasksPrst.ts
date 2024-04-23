@@ -10,7 +10,7 @@ export const localTaskInformation = persisted("localTaskInformation", {
     records: [{
         Category: {
             Id: -1,
-            Title: "Uncategorized",
+            Title: "Без категория",
             Color: "#CCCCCC"
         },
         Tasks: [] as Task[]

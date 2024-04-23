@@ -77,7 +77,7 @@
 		<hr />
 		<p style="color:red;position:absolute;bottom:50px;"><b>{errorMessage}</b></p>
 		<div class="button-holder">
-			<button on:click={() => dialog.close()}>Close</button>
+			<button on:click={() => dialog.close()}>Затвори</button>
 			<button class="action-button" on:click={async () => { await handleAction()}}>{buttonTitle}</button>
 		</div>
 	</div>

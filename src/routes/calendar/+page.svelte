@@ -40,21 +40,21 @@
             <i class="fas fa-angle-right next"></i>
           </div>
           <div class="weekdays">
-            <div>Sun</div>
-            <div>Mon</div>
-            <div>Tue</div>
-            <div>Wed</div>
-            <div>Thu</div>
-            <div>Fri</div>
-            <div>Sat</div>
+            <div>Нед</div>
+            <div>Пон</div>
+            <div>Вт</div>
+            <div>Ср</div>
+            <div>Чт</div>
+            <div>Пет</div>
+            <div>Съб</div>
           </div>
           <div class="days"></div>
           <div class="goto-today">
             <div class="goto">
               <input type="text" placeholder="mm/yyyy" class="date-input" />
-              <button class="goto-btn">Go</button>
+              <button class="goto-btn">Отиди</button>
             </div>
-            <button class="today-btn">Today</button>
+            <button class="today-btn">Днес</button>
           </div>
         </div>
       </div>
@@ -66,30 +66,30 @@
         <div class="events"></div>
         <div class="add-event-wrapper">
           <div class="add-event-header">
-            <div class="title">Add Event</div>
+            <div class="title">Добави събитие</div>
             <i class="fas fa-times close"></i>
           </div>
           <div class="add-event-body">
             <div class="add-event-input">
-              <input type="text" placeholder="Event Name" class="event-name" />
+              <input type="text" placeholder="Името на събитието" class="event-name" />
             </div>
             <div class="add-event-input">
               <input
                 type="text"
-                placeholder="Event Time From"
+                placeholder="Час на начало"
                 class="event-time-from"
               />
             </div>
             <div class="add-event-input">
               <input
                 type="text"
-                placeholder="Event Time To"
+                placeholder="Час за край"
                 class="event-time-to"
               />
             </div>
           </div>
           <div class="add-event-footer">
-            <button class="add-event-btn">Add Event</button>
+            <button class="add-event-btn">Добави събитие</button>
           </div>
         </div>
       </div>
@@ -101,7 +101,8 @@
       </button>
     </div>
     <script lang='ts'>
-      const backendURL = "https://overtaskapi.me";
+      //const backendURL = "https://overtaskapi.me";
+      const backendURL = 'https://localhost:7221';
       
 const calendar = document.querySelector(".calendar"),
 date = document.querySelector(".date"),
@@ -128,7 +129,7 @@ let activeDay;
 let month = today.getMonth();
 let year = today.getFullYear();
 
-const months = [
+/*const months = [
 "January",
 "February",
 "March",
@@ -141,6 +142,20 @@ const months = [
 "October",
 "November",
 "December",
+];*/
+const months = [
+"Януари",
+"Февруари",
+"Март",
+"Април",
+"Май",
+"Юни",
+"Юли",
+"Август",
+"Септември",
+"Октомври",
+"Ноември",
+"Декември",
 ];
 
 const eventsArr = [];
@@ -157,6 +172,7 @@ async function getToken() {
   const token = cookie.split('=')[1];
   return token;
 }   
+
 
 async function isAuthenticated(){
   if(document.cookie.match(/^(.*;)?\s*token\s*=\s*[^;]+(.*)?$/) != null){
@@ -335,15 +351,16 @@ if (dateArr.length === 2) {
     return;
   }
 }
-alert("Invalid Date");
+alert("Грешен формат на дата");
 }
 
 //function get active day day name and date and update eventday eventdate
 function getActiveDay(date) {
 const day = new Date(year, month, date);
-const dayName = day.toString().split(" ")[0];
+const dayName = day.toLocaleDateString("bg-BG", { weekday: "long" });
+const monthName = day.toLocaleDateString("bg-BG", { month: "long" });
 eventDay.innerHTML = dayName;
-eventDate.innerHTML = date + " " + months[month] + " " + year;
+eventDate.innerHTML = date + " " + monthName + " " + year;
 }
 
 //function update events when a day is active
@@ -370,7 +387,7 @@ eventsArr.forEach((event) => {
 });
 if (events === "") {
   events = `<div class="no-event">
-          <h3>No Events</h3>
+          <h3>Няма събития</h3>
       </div>`;
 }
 eventsContainer.innerHTML = events;
@@ -430,7 +447,7 @@ const eventTitle = addEventTitle.value;
 const eventTimeFrom = addEventFrom.value;
 const eventTimeTo = addEventTo.value;
 if (eventTitle === "" || eventTimeFrom === "" || eventTimeTo === "") {
-  alert("Please fill all the fields");
+  alert("Моля попълнете всички полета");
   return;
 }
 
@@ -445,7 +462,7 @@ if (
   timeToArr[0] > 23 ||
   timeToArr[1] > 59
 ) {
-  alert("Invalid Time Format");
+  alert("Невалиден формат на часа");
   return;
 }
 
@@ -468,7 +485,7 @@ eventsArr.forEach((event) => {
   }
 });
 if (eventExist) {
-  alert("Event already added");
+  alert("Събитието вече съществува");
   return;
 }
 const newEvent = {
@@ -516,7 +533,6 @@ if (!activeDayEl.classList.contains("event")) {
 //function to delete event when clicked on event
 eventsContainer.addEventListener("click", (e) => {
 if (e.target.classList.contains("event")) {
-  if (confirm("Are you sure you want to delete this event?")) {
     const eventTitle = e.target.children[0].children[1].innerHTML;
     eventsArr.forEach((event) => {
       if (
@@ -541,7 +557,6 @@ if (e.target.classList.contains("event")) {
       }
     });
     updateEvents(activeDay);
-  }
 }
 });
 
@@ -621,7 +636,8 @@ return time;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
+  /*font-family: "Poppins", sans-serif;*/
+  font-family: "Cabin", sans-serif;
 }
 /* nice scroll bar */
 ::-webkit-scrollbar {

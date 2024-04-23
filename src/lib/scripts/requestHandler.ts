@@ -33,6 +33,10 @@ export async function getUserId(){
 }
 
 export async function isAuthenticated(){
+    if(await isServerRunning() == false){
+        await removeToken();
+        return false;
+    }
     if(document.cookie.match(/^(.*;)?\s*token\s*=\s*[^;]+(.*)?$/) != null){
         return true;
       }
@@ -58,4 +62,22 @@ export async function getUsername(){
     }
 
     return "Unknown";
+}
+
+async function isServerRunning(){
+    try {
+        const response = await fetch(`${backendURL}/account/serverStatus`, {
+            method: 'GET',
+        });
+        return response.ok;
+    } catch (error) {
+        console.error('Failed to fetch server status:', error);
+        return false;
+    }
+}
+
+async function removeToken(){
+    if (browser) {
+        document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    }
 }

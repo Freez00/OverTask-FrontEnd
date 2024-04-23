@@ -137,19 +137,19 @@
 
     <Navbar/>
         <hr>
-        <h1 class="header">Your groups</h1>
+        <h1 class="header">Вашите групи</h1>
         <hr>
 
     <div class="button-holder">
         <button class="create-group-button" on:click={() => (showCreateModal = true)}>
-            Create Group
+            Създайте група
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-patch-plus" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M8 5.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V10a.5.5 0 0 1-1 0V8.5H6a.5.5 0 0 1 0-1h1.5V6a.5.5 0 0 1 .5-.5"/>
                 <path d="m10.273 2.513-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911z"/>
               </svg>
         </button>
         <button class="join-group-button" on:click={() => (showJoinModal = true)}>
-            Join Group
+            Присъединяване
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-box-arrow-in-right" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M6 3.5a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-2a.5.5 0 0 0-1 0v2A1.5 1.5 0 0 0 6.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-8A1.5 1.5 0 0 0 5 3.5v2a.5.5 0 0 0 1 0z"/>
                 <path fill-rule="evenodd" d="M11.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5H1.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z"/>
@@ -164,7 +164,7 @@
                 <i class="fa-solid fa-user-group"></i>
             </button>
             <ManageModal showModal = {group.Id === activeMembersModal} 
-            buttonAction={async () => {return true;}} buttonTitle="Done" badMessage="Error occured." 
+            buttonAction={async () => {return true;}} buttonTitle="Готово" badMessage="Error occured." 
             deleteButtonAction={undefined}> 
                 <p class="group-name">{group.Name}</p>
                 <hr>
@@ -205,49 +205,49 @@
             <div class="group-name">{group.Name}</div>
             <div class="group-actions">
                 {#if group.OwnerID == userID}
-                <button class="manage-button" on:click={async () => {await handleManageGroup(group.Id); activeGroup=-1}}>Manage</button>
-                <ManageModal showModal={group.Id === activeGroup} buttonAction={async () => handleEditGroup(group)} buttonTitle="Save Changes" 
+                <button class="manage-button" on:click={async () => {await handleManageGroup(group.Id); activeGroup=-1}}>Настройки</button>
+                <ManageModal showModal={group.Id === activeGroup} buttonAction={async () => handleEditGroup(group)} buttonTitle="Запази промените" 
                     badMessage="Couldn't save changes." bind:managedGroup={group} deleteButtonAction={async() => handleDeleteGroup(group.Id)}>
                     <div class="mb-3" >
-                        <label for="GroupName" class="form-label">Group Name <span style="font-size:13px;"></span></label>
+                        <label for="GroupName" class="form-label">Име на групата <span style="font-size:13px;"></span></label>
                         <input type="text" class="form-control" id="GroupName" bind:value={group.Name} />
                     </div>
                     <div class="mb-3" >
-                        <label for="JoinCode" class="form-label">Join Code <span style="font-size:13px;"></span></label>
+                        <label for="JoinCode" class="form-label">Код за достъп <span style="font-size:13px;"></span></label>
                         <input  type="text" class="form-control" id="JoinCode" bind:value={group.JoinCode} disabled/>
                     </div>
                     <div class="mb-3" >
-                        <label for="PictureURL" class="form-label">Picture</label>
+                        <label for="PictureURL" class="form-label">Снимка</label>
                         <select class="form-select" id="PictureURL-{group.Id}" bind:value={group.PictureURL}>
-                            <option value="/group_1.jpg">Group 1</option>
-                            <option value="/group_2.jpg">Group 2</option>
-                            <option value="/group_3.jpg">Group 3</option>
-                            <option value="/group_4.jpg">Group 4</option>
-                            <option value="/group_5.jpg">Group 5</option>
+                            <option value="/group_1.jpg">Група 1</option>
+                            <option value="/group_2.jpg">Група 2</option>
+                            <option value="/group_3.jpg">Група 3</option>
+                            <option value="/group_4.jpg">Група 4</option>
+                            <option value="/group_5.jpg">Група 5</option>
                         </select>
                     </div>
                 </ManageModal>
                 {/if}
-                <button class="calendar-button" on:click={async () => await handleCalendarView(group.Id)}>Calendar</button>
+                <button class="calendar-button" on:click={async () => await handleCalendarView(group.Id)}>Календар</button>
             </div>
         </div>
         {/each}
     </div>
     
-    <Modal bind:showModal={showCreateModal} buttonAction={handleCreateGroup} buttonTitle="Create Group" badMessage="Group with that join code exists.">
+    <Modal bind:showModal={showCreateModal} buttonAction={handleCreateGroup} buttonTitle="Създаване" badMessage="Група с въведения код вече съществува">
         <div class="mb-3" >
-            <label for="GroupName" class="form-label">Group Name <span style="font-size:13px;">(can't be empty)</span></label>
+            <label for="GroupName" class="form-label">Име на група&nbsp;&nbsp;<span style="font-size:13px;">(задължително)</span></label>
             <input type="text" class="form-control" id="GroupName" bind:value={createGroupName} />
         </div>
         <div class="mb-3" >
-            <label for="JoinCode" class="form-label">Join Code <span style="font-size:13px;"></span></label>
-            <input type="text" class="form-control" id="JoinCode" placeholder="Leave blank for auto" bind:value={createJoinCode}/>
+            <label for="JoinCode" class="form-label">Код за достъп<span style="font-size:13px;"></span></label>
+            <input type="text" class="form-control" id="JoinCode" placeholder="(Автоматично генериран)" bind:value={createJoinCode}/>
         </div>
     </Modal>
     
-    <Modal bind:showModal={showJoinModal} buttonAction={handleJoinGroup}  buttonTitle="Join Group" badMessage="Couldn't find group or already joined.">
+    <Modal bind:showModal={showJoinModal} buttonAction={handleJoinGroup}  buttonTitle="Присъединяване" badMessage="Групата не е намерена или вече сте вътре">
         <div class="mb-3" >
-            <label for="JoinCode" class="form-label">Join Code <span style="font-size:13px;"></span></label>
+            <label for="JoinCode" class="form-label">Код за достъп<span style="font-size:13px;"></span></label>
             <input type="text" class="form-control" id="JoinCode"  bind:value={joinJoinCode}/>
         </div>
     </Modal>

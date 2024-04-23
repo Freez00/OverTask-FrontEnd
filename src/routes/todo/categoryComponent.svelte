@@ -136,8 +136,8 @@
             <input class="" type="text" bind:value={title} bind:this={inputElement} placeholder={record.Category.Title}/>
             <input type="color" id="color-picker" bind:this={colorPicker}>
             <div class="category-actions">
-                <button on:click={async () => {await confirmEdit()}}>Confirm edit</button>
-                <button on:click={() => {cancelEdit()}}>Cancel edit</button>
+                <button on:click={async () => {await confirmEdit()}}>Потвърждаване</button>
+                <button on:click={() => {cancelEdit()}}>Отказване</button>
             </div>
         {:else}
         <div style="display:inline-flex; justify-content:center; align-items:center;vertical-align:middle;">
@@ -148,8 +148,8 @@
         {#if record.Category.Id != -1}
         <div class="category-actions">
             <button on:click={()=> {startCreating()}}>+</button>
-            <button on:click={async () => {await startEditing()}}>Edit Category</button>
-            <button on:click={async () => {await handleDeleteCategoryAPI()}}>Delete Category</button>
+            <button on:click={async () => {await startEditing()}}>Редакция на категория</button>
+            <button on:click={async () => {await handleDeleteCategoryAPI()}}>Изтриване на категория</button>
         </div>
         {:else}
         <div class="category-actions">
@@ -168,7 +168,7 @@
                 <p>{task.Title}</p>
             </div>
             <div class="task-actions">
-                <button on:click={async () => {await handleDeleteTaskAPI(task.Id)}}>Delete</button>
+                <button on:click={async () => {await handleDeleteTaskAPI(task.Id)}}>Изтриване</button>
             </div>
         </div>
         {/each}
@@ -177,10 +177,10 @@
     {#if isCreatingTask}
 
     <div class="task">
-        <input type="text" bind:value={title} bind:this={createInput} placeholder="Enter to-do"/>
+        <input type="text" bind:value={title} bind:this={createInput} placeholder="Въведете задача"/>
         <div class="task-actions">
-            <button on:click={async () => {confirmCreate()}}>Create Task</button>
-            <button on:click={async () => {isCreatingTask=false; title='';}}>Cancel</button>
+            <button on:click={async () => {confirmCreate()}}>Създаване</button>
+            <button on:click={async () => {isCreatingTask=false; title='';}}>Отказване</button>
         </div>
     </div>
     {/if}

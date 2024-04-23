@@ -142,27 +142,27 @@
     <main>
         <div class="container mx-auto">
             <div class="title-container">
-                <h1 class="title" class:active={!isRegister} on:click={() => isRegister = false}>Login</h1>
-                <h1 class="title" class:active={isRegister} on:click={() => isRegister = true}>Register</h1>
+                <h1 class="title" class:active={!isRegister} on:click={() => isRegister = false}>Вход</h1>
+                <h1 class="title" class:active={isRegister} on:click={() => isRegister = true}>Регисър</h1>
             </div>
             <form on:submit|preventDefault={handleSubmit}>
                 {#if isRegister}
                 <div class="mb-3" transition:slide={{}}>
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label">Потребителско име</label>
                     <input type="text" class="form-control" id="username" bind:value={username}  />
                 </div>
                 {/if}
                 <div class="mb-3" transition:slide={{}}>
-                    <label for="email" class="form-label">Email</label>
+                    <label for="email" class="form-label">Имейл</label>
                     <input type="text" class="form-control" id="email" bind:value={email}  />
                 </div>
                 <div class="mb-3" transition:slide={{}}>
-                    <label for="password" class="form-label">Password</label>
+                    <label for="password" class="form-label">Парола</label>
                     <input type="password" class="form-control" id="password" bind:value={password}  />
                 </div>
                 {#if isRegister}
                 <div class="mb-3" transition:slide={{}}>
-                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <label for="confirmPassword" class="form-label">Потвърждение на паролата</label>
                     <input type="password" class="form-control" id="confirmPassword" bind:value={confirmPassword}  />
                 </div>
                 {/if}
@@ -177,7 +177,7 @@
                     <button type="submit" class="btn btn-primary" style="background-color:{buttonColor}" 
                         transition:scale on:mousedown={handleMouseDown} on:mouseup={handleMouseUp} on:mouseleave={handleMouseUp}
                         on:mouseenter={handleMouseEnter}>
-                        {isRegister ? 'Register' : 'Login'}
+                        {isRegister ? 'Регистриране' : 'Влизане'}
                     </button>
                 </div>
             </form>

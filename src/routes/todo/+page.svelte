@@ -9,7 +9,7 @@
     import {tick} from 'svelte';
     import {isAuthenticated} from '$lib/scripts/requestHandler';
 
-    let info: any = [];
+    let info: any = writable([]);
     let isCreatingCategory:boolean = false;
     let createCategoryTitle:string = '';
     let categoryTitleInput:any;
@@ -33,14 +33,17 @@
 
     })
 
+    
+
     async function getInfo(){
         let data;
+        info.set([])
         if(await isAuthenticated()){
             data = await getTasksAPI();
         } else {
             data = getTasksLocal();
         }
-        info = data ? data : [];
+        info.set(data ? data : []);
         console.log(info);
     }
 
@@ -53,7 +56,7 @@
             createCategoryLocal(createCategoryTitle, colorValue);
         }
 
-        info = [];
+        info.set([]);
         await getInfo();
         createCategoryTitle= '';
     }
@@ -64,15 +67,16 @@
 
 <div class="main">
 
-    <h1 class="header anton-regular">Tasks</h1>
-    <button on:click={() => {isCreatingCategory = true}}>Create Category</button>
+    <h1 class="header anton-regular">Списък със задачи</h1>
+    <button on:click={() => {isCreatingCategory = true}}>Създавайте категория</button>
     {#if info.length != 0}
-    {#each info as record}
+    {#each $info as record}
     <CategoryComponent 
         record={record} 
         bind:editingCategory={editingCategory} 
         editingTask={editingTask} 
         getInfo={getInfo}
+        
     />
     {/each}
     {/if}
@@ -80,11 +84,11 @@
     {#if isCreatingCategory}
     <div class="category-section">
         <div class="category">
-            <input class="" type="text" bind:value={createCategoryTitle} bind:this={categoryTitleInput} placeholder="Category name"/>
+            <input class="" type="text" bind:value={createCategoryTitle} bind:this={categoryTitleInput} placeholder="Име на категория"/>
             <input type="color" id="color-picker" bind:this={colorPicker}>
             <div class="category-actions">
-                <button on:click={async () => {await handleCreateCategory()}}>Create Category</button>
-                <button on:click={() => {isCreatingCategory = false; createCategoryTitle = ''}}>Cancel</button>
+                <button on:click={async () => {await handleCreateCategory()}}>Създаване</button>
+                <button on:click={() => {isCreatingCategory = false; createCategoryTitle = ''}}>Отказване</button>
             </div>
         </div>
     </div>
@@ -110,6 +114,7 @@
     .main *{
         /*word-wrap: break-word;*/
     }
+
 
     .header{
         margin-top:1rem;

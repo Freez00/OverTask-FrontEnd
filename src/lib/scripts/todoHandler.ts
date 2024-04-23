@@ -75,15 +75,11 @@ export function updateTaskLocal(taskId:number, title:string, completed:boolean){
 export function createCategoryLocal(title:string, color:string){
     let taskInfo = getTasksLocal();
     let index = get(categoryLocalIndex);
-    console.log("index is")
-    console.log(index)
     let category = {
         Id: index,
         Title: title,
         Color: color,
     };
-    console.log("category is")
-    console.log(category)
 
     taskInfo.push({ Category: category, Tasks: [] });
 
@@ -106,6 +102,8 @@ export function updateCategoryLocal(categoryId:number, title:string, color:strin
 }
 
 export function deleteCategoryLocal(categoryId: number) {
+    console.log("called delete on")
+    console.log(categoryId)
     let taskInfo = getTasksLocal();
     
     taskInfo = taskInfo.filter(record => record.Category.Id !== categoryId);
@@ -148,8 +146,6 @@ export async function createTaskAPI(categoryId:number, title:string){
         Title: title,
         Completed: false
     }
-    console.log("kurt cobain pov")
-    console.log(resource)
     const response = await fetch(`${backendURL}/todo/create`, {
         method: 'POST',
         headers: {
@@ -160,16 +156,12 @@ export async function createTaskAPI(categoryId:number, title:string){
     });
 
     if(response.ok){
-        console.log("got it sent");
-        
         var data = await response.json();
-        console.log("read it")
         var task:Task = {
             Id: data.id,
             Title: data.title,
             Completed: data.completed
         }
-        console.log("returning")
         return task;
     }
     return undefined;
@@ -260,6 +252,7 @@ export async function updateCategoryAPI(categoryId:number, title:string, color:s
 }
 
 export async function deleteCategoryAPI(categoryId:number){
+
     const response = await fetch(`${backendURL}/todo/category/delete`, {
         method: 'DELETE',
         headers: {
