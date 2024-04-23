@@ -158,7 +158,7 @@
     </div>
 
     <div class="group-container">
-        {#each groups as group, index}
+        {#each groups as group, index (group.Id)}
         <div class="group" style="animation-delay: {index * 0.07}s; visibility:hidden;">
             <button class="view-members" on:click={async() => {await handleViewMembers(group.Id); activeMembersModal=-1;}}>
                 <i class="fa-solid fa-user-group"></i>

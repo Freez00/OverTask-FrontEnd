@@ -37,7 +37,6 @@
 
     async function getInfo(){
         let data;
-        info.set([])
         if(await isAuthenticated()){
             data = await getTasksAPI();
         } else {
@@ -56,7 +55,6 @@
             createCategoryLocal(createCategoryTitle, colorValue);
         }
 
-        info.set([]);
         await getInfo();
         createCategoryTitle= '';
     }
@@ -70,7 +68,7 @@
     <h1 class="header anton-regular">Списък със задачи</h1>
     <button on:click={() => {isCreatingCategory = true}}>Създавайте категория</button>
     {#if info.length != 0}
-    {#each $info as record}
+    {#each $info as record (record.Category.Id)}
     <CategoryComponent 
         record={record} 
         bind:editingCategory={editingCategory} 
