@@ -66,7 +66,7 @@
 <div class="main">
 
     <h1 class="header anton-regular">Списък със задачи</h1>
-    <button on:click={() => {isCreatingCategory = true}}>Създавайте категория</button>
+    <button on:click={() => {isCreatingCategory = true}} id="createcat">&nbsp;🞥&nbsp;</button>
     {#if info.length != 0}
     {#each $info as record (record.Category.Id)}
     <CategoryComponent 
@@ -85,8 +85,8 @@
             <input class="" type="text" bind:value={createCategoryTitle} bind:this={categoryTitleInput} placeholder="Име на категория"/>
             <input type="color" id="color-picker" bind:this={colorPicker}>
             <div class="category-actions">
-                <button on:click={async () => {await handleCreateCategory()}}>Създаване</button>
-                <button on:click={() => {isCreatingCategory = false; createCategoryTitle = ''}}>Отказване</button>
+                <button on:click={async () => {await handleCreateCategory()}}><i class="fa-solid fa-check"></i></button>
+                <button on:click={() => {isCreatingCategory = false; createCategoryTitle = ''}}><i class="fa-solid fa-x"></i></button>
             </div>
         </div>
     </div>
@@ -126,6 +126,21 @@
         font-family: "Anton", sans-serif;
         font-weight: 400;
         font-style: normal;
+    }
+
+    #createcat{
+        font-size: 2rem;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        padding: 0.5rem;
+        border-radius: 5px;
+        background-color: #8B7AA0;
+        color: white;
+        border: 0;
+        cursor: pointer;
+    }
+    #createcat:hover{
+        background-color: #5c3e84;
     }
 
     .category-section {

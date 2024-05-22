@@ -136,8 +136,8 @@
             <input class="" type="text" bind:value={title} bind:this={inputElement} placeholder={record.Category.Title}/>
             <input type="color" id="color-picker" bind:this={colorPicker}>
             <div class="category-actions">
-                <button on:click={async () => {await confirmEdit()}}>Потвърждаване</button>
-                <button on:click={() => {cancelEdit()}}>Отказване</button>
+                <button on:click={async () => {await confirmEdit()}}><i class="fa-solid fa-check"></i></button>
+                <button on:click={() => {cancelEdit()}}><i class="fa-solid fa-x"></i></button>
             </div>
         {:else}
         <div style="display:inline-flex; justify-content:center; align-items:center;vertical-align:middle;">
@@ -147,13 +147,13 @@
         </div>
         {#if record.Category.Id != -1}
         <div class="category-actions">
-            <button on:click={()=> {startCreating()}}>+</button>
-            <button on:click={async () => {await startEditing()}}>Редакция на категория</button>
-            <button on:click={async () => {await handleDeleteCategoryAPI()}}>Изтриване на категория</button>
+            <button on:click={()=> {startCreating()}}>🞥</button>
+            <button on:click={async () => {await startEditing()}}><i class="fa-solid fa-pen"></i></button>
+            <button on:click={async () => {await handleDeleteCategoryAPI()}}><i class="fa-solid fa-trash-can"></i></button>
         </div>
         {:else}
         <div class="category-actions">
-            <button on:click={()=> {startCreating()}}>+</button>
+            <button on:click={()=> {startCreating()}}>🞥</button>
         </div>
         {/if}
 
@@ -168,7 +168,7 @@
                 <p>{task.Title}</p>
             </div>
             <div class="task-actions">
-                <button on:click={async () => {await handleDeleteTaskAPI(task.Id)}}>Изтриване</button>
+                <button on:click={async () => {await handleDeleteTaskAPI(task.Id)}}>&nbsp;✖&nbsp;</button>
             </div>
         </div>
         {/each}
@@ -179,8 +179,8 @@
     <div class="task">
         <input type="text" bind:value={title} bind:this={createInput} placeholder="Въведете задача"/>
         <div class="task-actions">
-            <button on:click={async () => {confirmCreate()}}>Създаване</button>
-            <button on:click={async () => {isCreatingTask=false; title='';}}>Отказване</button>
+            <button on:click={async () => {confirmCreate()}}>&nbsp;✔&nbsp;</button>
+            <button on:click={async () => {isCreatingTask=false; title='';}}>&nbsp;✖&nbsp;</button>
         </div>
     </div>
     {/if}
